@@ -1,8 +1,11 @@
-from sqlmodel.ext.asyncio.session import AsyncSession
-from src.books.schemas import BookCreateModel, BookUpdateModel
-from src.books.models import Book
-from sqlmodel import select, desc
 from datetime import datetime
+
+from sqlmodel import desc, select
+from sqlmodel.ext.asyncio.session import AsyncSession
+
+from src.books.models import Book
+from src.books.schemas import BookCreateModel, BookUpdateModel
+
 
 class BookService:
     async def get_all_books(self, session: AsyncSession):

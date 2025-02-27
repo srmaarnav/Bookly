@@ -1,12 +1,12 @@
-from fastapi import APIRouter, HTTPException, status, Depends
-from src.books.schemas import Book, BookUpdateModel
-from fastapi import FastAPI, status
-from fastapi.exceptions import HTTPException
 from typing import List
-from src.db.main import get_session
+
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, status
+from fastapi.exceptions import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.books.schemas import Book, BookCreateModel, BookUpdateModel
 from src.books.service import BookService
-from src.books.schemas import BookCreateModel
+from src.db.main import get_session
 
 book_router = APIRouter()
 book_service = BookService()
@@ -22,8 +22,10 @@ async def get_all_books(session: AsyncSession = Depends(get_session)):
 async def create_book(
     book_data: BookCreateModel, session: AsyncSession = Depends(get_session)
 ) -> dict:
-    print(book_data.model_dump(exclude_unset=False, exclude_none=False))  # Check if `published_date` exists
-    
+    print(
+        book_data.model_dump(exclude_unset=False, exclude_none=False)
+    )  # Check if `published_date` exists
+
     new_book = await book_service.create_book(book_data, session)
 
     return new_book
@@ -56,11 +58,14 @@ async def update_book(
     else:
         return update_book
 
+
 @book_router.delete("/{book_uid}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_book(book_uid: str, session: AsyncSession = Depends(get_session)):
     book_to_delete = await book_service.delete_book(book_uid, session)
-    
+
     if book_to_delete is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Book not found"
+        )
     else:
         return {}
