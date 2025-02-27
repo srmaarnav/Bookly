@@ -5,7 +5,7 @@ repos:
       - id: isort
         name: isort
         args: ["--profile", "black"]
-        stages: [commit]
+        stages: [pre-commit]
 
 
   - repo: https://github.com/psf/black
@@ -13,4 +13,4 @@ repos:
     hooks:
       - id: black
         name: black
-        stages: [commit]
+        stages: [pre-commit]
