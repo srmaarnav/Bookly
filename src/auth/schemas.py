@@ -12,6 +12,11 @@ class UserCreateModel(BaseModel):
     password: str = Field(min_length=6)
 
 
+class UserLoginModel(BaseModel):
+    email: str = Field(max_length=64)
+    password: str = Field(min_length=6)
+
+
 class UserModel(BaseModel):
     uid: uuid.UUID
     username: str
