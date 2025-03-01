@@ -26,12 +26,14 @@ markdown-it-py==3.0.0
 MarkupSafe==3.0.2
 mdurl==0.1.2
 nodeenv==1.9.1
+passlib==1.7.4
 platformdirs==4.3.6
 pre_commit==4.1.0
 pydantic==2.10.6
 pydantic-settings==2.8.0
 pydantic_core==2.27.2
 Pygments==2.19.1
+PyJWT==2.10.1
 python-dotenv==1.0.1
 python-multipart==0.0.20
 PyYAML==6.0.2
