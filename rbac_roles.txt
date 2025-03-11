@@ -12,6 +12,7 @@ admin
 ]
 users
 [
-    "crud on their own book submissions", "crud on their reviews", 
+    "crud on their own book submissions", 
+    "crud on their reviews", 
     "crud on their own accounts"
 ]

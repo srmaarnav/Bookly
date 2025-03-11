@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status
 from fastapi.exceptions import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.auth.dependecies import AccessTokenBearer
+from src.auth.dependecies import AccessTokenBearer, RoleChecker
 from src.books.schemas import Book, BookCreateModel, BookUpdateModel
 from src.books.service import BookService
 from src.db.main import get_session
@@ -12,12 +12,14 @@ from src.db.main import get_session
 book_router = APIRouter()
 book_service = BookService()
 access_token_bearer = AccessTokenBearer()
+role_checker = RoleChecker(["admin", "user"])
 
 
 @book_router.get("/", response_model=List[Book])
 async def get_all_books(
     session: AsyncSession = Depends(get_session),
     user_details=Depends(access_token_bearer),
+    _: bool = Depends(role_checker),
 ):
     print(user_details)
     books = await book_service.get_all_books(session)
@@ -29,6 +31,7 @@ async def create_book(
     book_data: BookCreateModel,
     session: AsyncSession = Depends(get_session),
     user_details=Depends(access_token_bearer),
+    _: bool = Depends(role_checker),
 ) -> dict:
     print(
         book_data.model_dump(exclude_unset=False, exclude_none=False)
@@ -44,6 +47,7 @@ async def get_book(
     book_uid: str,
     session: AsyncSession = Depends(get_session),
     user_details=Depends(access_token_bearer),
+    _: bool = Depends(role_checker),
 ) -> dict:
     book = await book_service.get_book(book_uid, session)
 
@@ -61,6 +65,7 @@ async def update_book(
     book_data: BookUpdateModel,
     session: AsyncSession = Depends(get_session),
     user_details=Depends(access_token_bearer),
+    _: bool = Depends(role_checker),
 ) -> dict:
     updated_book = await book_service.update_book(book_uid, book_data, session)
 
@@ -77,6 +82,7 @@ async def delete_book(
     book_uid: str,
     session: AsyncSession = Depends(get_session),
     user_details=Depends(access_token_bearer),
+    _: bool = Depends(role_checker),
 ):
     book_to_delete = await book_service.delete_book(book_uid, session)
 
