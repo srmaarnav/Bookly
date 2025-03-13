@@ -12,7 +12,7 @@ from src.auth.dependecies import (
     get_current_user,
 )
 from src.auth.models import User
-from src.auth.schemas import UserCreateModel, UserLoginModel
+from src.auth.schemas import UserCreateModel, UserLoginModel, UserModel
 from src.auth.service import UserService
 from src.auth.utils import create_access_tokens, decode_access_token, verify_password
 from src.db.main import get_session
@@ -96,7 +96,7 @@ async def refresh_token(token_details: dict = Depends(RefreshTokenBearer())):
     )
 
 
-@auth_router.get("/me")
+@auth_router.get("/me", response_model=UserModel)
 async def get_current_user(
     user=Depends(get_current_user), _: bool = Depends(role_checker)
 ):
