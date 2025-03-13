@@ -8,7 +8,7 @@ admin
     "book submissions",
     "crud on users",
     "crud on reviews",
-    "revoking access",
+    "revoking access"
 ]
 users
 [
