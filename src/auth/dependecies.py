@@ -6,10 +6,10 @@ from fastapi.security import HTTPBearer
 from fastapi.security.http import HTTPAuthorizationCredentials
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from src.auth.models import User
 from src.auth.service import UserService
 from src.auth.utils import decode_access_token
 from src.db.main import get_session
+from src.db.models import User
 from src.db.redis import add_jti_to_blocklist, is_jti_blacklisted
 
 user_service = UserService()
