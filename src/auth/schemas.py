@@ -30,4 +30,7 @@ class UserModel(BaseModel):
     password_hash: str = Field(exclude=True)
     created_at: datetime
     updated_at: datetime
+
+
+class UserBooksModel(UserModel):
     books: List[Book]

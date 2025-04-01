@@ -11,11 +11,11 @@ from src.auth.dependecies import (
     RoleChecker,
     get_current_user,
 )
-from src.auth.models import User
-from src.auth.schemas import UserCreateModel, UserLoginModel, UserModel
+from src.auth.schemas import UserBooksModel, UserCreateModel, UserLoginModel, UserModel
 from src.auth.service import UserService
 from src.auth.utils import create_access_tokens, decode_access_token, verify_password
 from src.db.main import get_session
+from src.db.models import User
 from src.db.redis import add_jti_to_blocklist
 
 auth_router = APIRouter()
@@ -25,7 +25,9 @@ role_checker = RoleChecker(["admin", "user"])
 REFRESH_TOKEN_EXPIRY = 2
 
 
-@auth_router.post("/signup", response_model=User, status_code=status.HTTP_201_CREATED)
+@auth_router.post(
+    "/signup", response_model=UserModel, status_code=status.HTTP_201_CREATED
+)
 async def create_user_account(
     user_data: UserCreateModel, session: AsyncSession = Depends(get_session)
 ):
@@ -96,7 +98,7 @@ async def refresh_token(token_details: dict = Depends(RefreshTokenBearer())):
     )
 
 
-@auth_router.get("/me", response_model=UserModel)
+@auth_router.get("/me", response_model=UserBooksModel)
 async def get_current_user(
     user=Depends(get_current_user), _: bool = Depends(role_checker)
 ):
